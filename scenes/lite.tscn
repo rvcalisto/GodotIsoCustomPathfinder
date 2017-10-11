@@ -1,0 +1,99 @@
+[gd_scene load_steps=7 format=1]
+
+[ext_resource path="res://resources/simple_tile_lite.tres" type="TileSet" id=1]
+[ext_resource path="res://textures/troll.png" type="Texture" id=2]
+[ext_resource path="res://resources/nav_tile.tres" type="TileSet" id=3]
+[ext_resource path="res://scripts/nav.gd" type="Script" id=4]
+[ext_resource path="res://scripts/draw.gd" type="Script" id=5]
+[ext_resource path="res://scripts/pathfinder.gd" type="Script" id=6]
+
+[node name="main" type="Node"]
+
+[node name="map" type="Node" parent="."]
+
+[node name="ground" type="TileMap" parent="map"]
+
+mode = 1
+tile_set = ExtResource( 1 )
+cell/size = Vector2( 60, 30 )
+cell/quadrant_size = 1
+cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+cell/half_offset = 2
+cell/tile_origin = 1
+cell/y_sort = false
+collision/use_kinematic = false
+collision/friction = 1.0
+collision/bounce = 0.0
+collision/layers = 1
+collision/mask = 1
+occluder/light_mask = 1
+tile_data = IntArray( -262137, 0, -262136, 0, -262135, 0, -262134, 0, -196598, 0, -196597, 0, -131066, 0, -131065, 0, -131064, 0, -131061, 0, -65531, 0, -65530, 0, -65529, 0, -65528, 0, -65527, 0, -65526, 0, -65525, 0, 4, 0, 5, 0, 7, 0, 8, 0, 9, 0, 10, 0, 65540, 0, 65544, 0, 65545, 0, 131076, 0, 131077, 0, 131079, 0, 131080, 0, 131081, 0, 196613, 0, 196614, 0, 196615, 0, 196616, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="player" type="Sprite" parent="map/ground" groups=[
+"player",
+]]
+
+transform/pos = Vector2( 210, 120 )
+transform/scale = Vector2( 0.7, 0.7 )
+z/z = 1
+texture = ExtResource( 2 )
+offset = Vector2( -8, -28 )
+
+[node name="nav" type="TileMap" parent="map/ground" groups=[
+"nav",
+]]
+
+visibility/visible = false
+mode = 1
+tile_set = ExtResource( 3 )
+cell/size = Vector2( 60, 30 )
+cell/quadrant_size = 16
+cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+cell/half_offset = 2
+cell/tile_origin = 1
+cell/y_sort = false
+collision/use_kinematic = false
+collision/friction = 1.0
+collision/bounce = 0.0
+collision/layers = 1
+collision/mask = 1
+occluder/light_mask = 1
+tile_data = IntArray( -262137, 0, -262136, 0, -262135, 0, -262134, 0, -196598, 0, -196597, 0, -131066, 0, -131065, 0, -131064, 0, -131061, 0, -65531, 0, -65530, 0, -65529, 0, -65528, 0, -65527, 0, -65526, 0, -65525, 0, 4, 0, 5, 0, 7, 0, 8, 0, 9, 0, 10, 0, 65540, 0, 65544, 0, 65545, 0, 131076, 0, 131077, 0, 131079, 0, 131080, 0, 131081, 0, 196613, 0, 196614, 0, 196615, 0, 196616, 0 )
+script/script = ExtResource( 4 )
+
+[node name="draw" type="Node2D" parent="map" groups=[
+"draw",
+]]
+
+script/script = ExtResource( 5 )
+
+[node name="pathfinder" type="Node2D" parent="map" groups=[
+"pathfinder",
+]]
+
+script/script = ExtResource( 6 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+transform/pos = Vector2( 239.805, 106.708 )
+anchor_mode = 1
+rotating = false
+current = true
+zoom = Vector2( 0.5, 0.5 )
+limit/left = -10000000
+limit/top = -10000000
+limit/right = 10000000
+limit/bottom = 10000000
+drag_margin/h_enabled = true
+drag_margin/v_enabled = true
+smoothing/enable = false
+smoothing/speed = 5.0
+drag_margin/left = 0.0
+drag_margin/top = 0.0
+drag_margin/right = 0.0
+drag_margin/bottom = 0.0
+
+
