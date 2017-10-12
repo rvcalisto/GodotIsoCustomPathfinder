@@ -1,17 +1,13 @@
 # ============================== Path Finder ==============================
 extends Node2D
 
-#This node generate routes between origin and target based on parsed
+#This node generates a path between origin and target based on parsed
 #grid, start_point and target_point.
-#
-#It is really powerfull as it can be changed to adapt to specific situations
+
+#It is really powerful as it can be changed to adapt to specific situations
 #and favor certain routes above other possible ones if 'COST' is calculated
 #differently, and so on.
 
-
-
-#instances
-var player
 
 #path finding
 var grid = Dictionary() #all avaliable positions as keys
@@ -21,7 +17,6 @@ var queue_list = {} #Queue used in the A* search algorithm
 
 func _ready():
 	pass
-
 
 
 #===================== Queue functions =====================
@@ -103,7 +98,7 @@ func search(start_pos, target_pos):
 			#if pos hasn't been calculated before, or its more effective than before
 			if !cost_so_far.has(pos) or new_cost < cost_so_far[pos]:
 				
-				#catalogues its cost
+				#catalogue its cost
 				cost_so_far[pos] = new_cost
 				
 				#defines its priority
@@ -112,7 +107,7 @@ func search(start_pos, target_pos):
 				#put into queue
 				Queue_put(pos, priority)
 				
-				#defines parent position
+				#define parent position
 				came_from[pos] = current
 	
 	#=========================== main loop end ===========================
@@ -140,36 +135,39 @@ func search(start_pos, target_pos):
 
 
 
-#get valid neighbor nodes from relative pos
+#get "pos" valid neighbor nodes
 func get_neighbors(pos):
 	
 	#array to hold all possible neighbours of current 'pos'
 	var neighbors = Array()
 	
-	#minimum distance between pos
-	var next = Vector2(30,15)
+	#minimum distance between cells
+	var next = Vector2(30,15) 
 	
-	#vector directions * next
-	var up = Vector2(1,-1) * next
-	var down = Vector2(-1,1) * next
-	var right = Vector2(1,1) * next
-	var left = Vector2(-1,-1) * next
+	#vector directions
+	var up = Vector2(1,-1); var down = Vector2(-1,1)
+	var right = Vector2(1,1); var left = Vector2(-1,-1)
 	
-	#if neighbour exists and is empty
-	if grid.has(up+pos):
-		if grid[up+pos][0] == "empty":
-			neighbors.append(up+pos)
-	if grid.has(down+pos):
-		if grid[down+pos][0] == "empty":
-			neighbors.append(down+pos)
-	if grid.has(right+pos):
-		if grid[right+pos][0] == "empty":
-			neighbors.append(right+pos)
-	if grid.has(left+pos):
-		if grid[left+pos][0] == "empty":
-			neighbors.append(left+pos)
+#	#diagonal vector directions (activate it if you want it)
+#	var w = Vector2(0,2); var s = Vector2(0,-2)
+#	var d = Vector2(2,0); var a = Vector2(-2,0)
 	
-	#print(neighbors)
+	#array of possible neighbors, yet to be validated
+	var check = [up,down,right,left] #only horizontal movement
+	#var check = [up,down,right,left,w,a,s,d] #with diagonal movement
+	
+	#if neighbour exists in grid and is "empty", append
+	for neighbor in check:
+		
+		#(direction * minimum_distance) + pos = relative_neighbour
+		neighbor = neighbor * next + pos
+		
+		#skip if cell is blocked
+		if grid.has(neighbor):
+			if grid[neighbor][0] == "empty":
+				neighbors.append(neighbor)
+	
+	#return array
 	return neighbors
 
 
