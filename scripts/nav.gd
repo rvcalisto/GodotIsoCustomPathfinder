@@ -107,7 +107,7 @@ func _input(event):
 				var spr = load("res://textures/X.png")
 				var block = Sprite.new(); block.set_texture(spr)
 				block.set_offset(Vector2(0,1)); block.set_pos(curtgt)
-				block.set_modulate( Color(1,0,0) ); add_child(block)
+				add_child(block)
 				
 				#block the cell and store instance reference
 				grid[curtgt][0] = "blocked"; grid[curtgt][1] = block
