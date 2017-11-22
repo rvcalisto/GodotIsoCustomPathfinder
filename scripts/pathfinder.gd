@@ -1,5 +1,5 @@
 # ============================== Path Finder ==============================
-extends Node2D
+extends Node
 
 #This node generates a path between origin and target based on parsed
 #grid, start_point and target_point.
@@ -10,20 +10,16 @@ extends Node2D
 
 
 #path finding
-var grid = Dictionary() #all avaliable positions as keys
-var locked = Vector2Array() #vect2 array of final route
+
+#get grid reference
+onready var grid = get_tree().get_nodes_in_group("nav")[0].grid 
+var locked = [] #array of vect2 points, return final route
 var queue_list = {} #Queue used in the A* search algorithm
 
 
-func _ready():
-	pass
 
 
 #===================== Queue functions =====================
-
-#is queue empty?
-func Queue_empty():
-	return queue_list.size() == 0
 
 #assign position and respective priority to queue
 func Queue_put(pos, priority):
@@ -33,7 +29,7 @@ func Queue_put(pos, priority):
 func Queue_get():
 	
 	#temporary array for pos cost
-	var priority = Array()
+	var priority = []
 	
 	#for costs in queue
 	for x in queue_list.values():
@@ -57,15 +53,13 @@ func Queue_get():
 #A* search
 func search(start_pos, target_pos):
 	
-	#updates grid for any possible changes
-	grid = get_tree().get_nodes_in_group("nav")[0].grid
 	
 	#if start_pos == target_pos, return empty array
 	if start_pos == target_pos:
-		return Vector2Array()
+		return []
 	
 	#resets path A* 
-	locked = Vector2Array()
+	locked = []
 	queue_list = {}
 	
 	#sets initial considerations
@@ -79,7 +73,7 @@ func search(start_pos, target_pos):
 	#============================= main loop =============================  
 
 	#while there are pos in queue list
-	while !Queue_empty():
+	while !queue_list.empty():
 		
 		#current node is highest priority node in queue 
 		current = Queue_get()
@@ -115,7 +109,7 @@ func search(start_pos, target_pos):
 	#if array doesn't have tgt_pos, failed, return empty array
 	if !came_from.has(target_pos):
 		#print("failed")
-		return Vector2Array()
+		return []
 	
 	#================  retrace route and return best path ================ 
 	
@@ -139,7 +133,7 @@ func search(start_pos, target_pos):
 func get_neighbors(pos):
 	
 	#array to hold all possible neighbours of current 'pos'
-	var neighbors = Array()
+	var neighbors = []
 	
 	#minimum distance between cells
 	var next = Vector2(30,15) 
@@ -154,7 +148,7 @@ func get_neighbors(pos):
 	
 	#array of possible neighbors, yet to be validated
 	var check = [up,down,right,left] #only horizontal movement
-	#var check = [up,down,right,left,w,a,s,d] #with diagonal movement
+#	var check = [up,down,right,left,w,a,s,d] #with diagonal movement
 	
 	#if neighbour exists in grid and is "empty", append
 	for neighbor in check:
@@ -164,7 +158,26 @@ func get_neighbors(pos):
 		
 		#skip if cell is blocked
 		if grid.has(neighbor):
-			if grid[neighbor][0] == "empty":
+			
+			#skip condition, off by default
+			var skip_tile = false 
+			
+			
+			#you may want this if you're using diagonal movement
+#			#====== prevents movement between diagonally blocked tiles ======
+#			#check how many non diagonal neighbours the origin tile has
+#			var i = 0; for neigh in [up, down, left, right]:
+#				var g = neigh * next + pos
+#				if grid.has(g): i += 1 if grid[g][0] == "empty" else 0
+#
+#			if i < 4: #if origin tile is possibly a corner
+#				for neigh in [w,a,s,d]: #check if movement is diagonal
+#					if !skip_tile && neighbor == neigh * next + pos:
+#						skip_tile = true #skip tile
+#			#===============================================================
+			
+			
+			if grid[neighbor][0] == "empty" && !skip_tile:
 				neighbors.append(neighbor)
 	
 	#return array

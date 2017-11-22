@@ -6,23 +6,22 @@ extends Node2D
 #all the information
 var curtgt = Vector2() #to be parsed
 var grid = {} #dictionary to be parsed
-var path = Vector2Array() #pathfinder generated route
+var path = [] #pathfinder generated route
 
 
 func _ready():
 	
 	#create a instruction label
 	var label = Label.new()
-	label.set_text("Mouse Middle Btn: Block/Unblock Cell \nMouse R Btn: Generate Path \nMouse L Btn: Teleport")
-	label.set_pos(Vector2(23.5,0))
-	label.set_scale(Vector2(.5,.5)) #camera zoom is doubled, correct scale 
+	label.text = "Mouse Middle Btn: Block/Unblock Cell \nMouse R Btn: Generate Path \nMouse L Btn: Teleport"
+	label.rect_position = Vector2(-5,-45)
+	label.rect_scale = Vector2(.5,.5) #camera zoom is doubled, correct scale 
 	get_viewport().call_deferred("add_child", label)
 	
-	
-	set_fixed_process(true)
+	set_physics_process(true)
 
 
-func _fixed_process(delta):
+func _physics_process(delta):
 	update() #draw each physics frame
 
 

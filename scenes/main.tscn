@@ -1,0 +1,81 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://resources/simple_tile_lite.tres" type="TileSet" id=1]
+[ext_resource path="res://scripts/nav.gd" type="Script" id=2]
+[ext_resource path="res://textures/sorry.png" type="Texture" id=3]
+[ext_resource path="res://scripts/draw.gd" type="Script" id=4]
+[ext_resource path="res://scripts/pathfinder.gd" type="Script" id=5]
+
+[node name="main" type="Node"]
+
+[node name="map" type="Node2D" parent="."]
+
+[node name="TileMap" type="TileMap" parent="map" groups=[
+"nav",
+]]
+
+mode = 1
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 60, 30 )
+cell_quadrant_size = 16
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+cell_half_offset = 2
+cell_tile_origin = 1
+cell_y_sort = false
+collision_use_kinematic = false
+collision_friction = 1.0
+collision_bounce = 0.0
+collision_layer = 1
+collision_mask = 1
+occluder_light_mask = 1
+tile_data = PoolIntArray( -327675, 0, -327673, 0, -327672, 0, -262136, 0, -262135, 0, -196605, 1, -196604, 2, -196603, 1, -196602, 0, -196599, 0, -131070, 1, -131069, 0, -131068, 0, -131067, 0, -131066, 0, -131065, 0, -131064, 0, -131063, 0, -65534, 0, -65533, 0, -65531, 0, -65530, 0, -65529, 0, -65528, 0, 2, 0, 6, 0, 65538, 0, 65539, 0, 65541, 0, 65542, 0, 65543, 0, 131075, 0, 131076, 0, 131077, 0, 131078, 0 )
+script = ExtResource( 2 )
+_sections_unfolded = [ "Cell" ]
+
+[node name="frog" type="Sprite" parent="map/TileMap" groups=[
+"player",
+]]
+
+position = Vector2( 180, 75 )
+z = 1
+texture = ExtResource( 3 )
+offset = Vector2( 0, -10 )
+_sections_unfolded = [ "Offset", "Transform" ]
+
+[node name="draw" type="Node2D" parent="map" groups=[
+"draw",
+]]
+
+script = ExtResource( 4 )
+
+[node name="pathfinder" type="Node" parent="map" groups=[
+"pathfinder",
+]]
+
+script = ExtResource( 5 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+position = Vector2( 211.828, 57.6313 )
+anchor_mode = 1
+rotating = false
+current = true
+zoom = Vector2( 0.5, 0.5 )
+limit_left = -10000000
+limit_top = -10000000
+limit_right = 10000000
+limit_bottom = 10000000
+limit_smoothed = false
+drag_margin_h_enabled = false
+drag_margin_v_enabled = false
+smoothing_enabled = false
+smoothing_speed = 5.0
+drag_margin_left = 0.2
+drag_margin_top = 0.2
+drag_margin_right = 0.2
+drag_margin_bottom = 0.2
+editor_draw_screen = true
+editor_draw_limits = false
+editor_draw_drag_margin = false
+
+

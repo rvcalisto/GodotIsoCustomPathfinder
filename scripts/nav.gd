@@ -7,7 +7,7 @@ extends TileMap
 #requested. EX: grid.has(position), grid[position], grid[postion][0], etc. 
 
 
-var walkable = {0:''} #hold walkable cells index as dictionary keys
+var walkable = [0] #hold walkable cells index
 var grid = {} #to be tile world locations
 var curtgt = Vector2() #cursor pick
 
@@ -48,15 +48,16 @@ func _ready():
 	#parse grid to be drawn
 	draw_node.grid = grid 
 	
-	set_process(true) #player interactions
-	set_process_input(true) #also player interactions
+	set_process(true) #cursor and player interactions
+	set_process_input(true) #also cursor and player interactions
 
 
 
 func _process(delta):
 	
 	#get map tile pos relative to mouse
-	var tgt_cell = world_to_map(get_global_mouse_pos())
+	var tgt_cell = world_to_map( get_global_mouse_position() )
+	
 	
 	#if tgt_cell is a valid cell (!= -1), sets it to curtgt
 	if get_cell(tgt_cell.x, tgt_cell.y) != -1:
@@ -81,13 +82,13 @@ func _input(event):
 			#if cell is not blocked
 			if grid[curtgt][0] == "empty":
 				#teleport the pawn and cleans drawn path
-				player.set_pos(curtgt); draw_node.path = Vector2Array()
+				player.position = curtgt; draw_node.path = []
 
 	#generate path
 	if event.is_action_pressed("mouse_act_right"):
 		#if cursor cell is in the grid
 		if grid.has(curtgt):
-			var path = pathfinder.search(player.get_pos(), curtgt)
+			var path = pathfinder.search(player.position , curtgt)
 			draw_node.path = path
 
 	#blocks/unblock path
@@ -97,7 +98,7 @@ func _input(event):
 		if grid.has(curtgt):
 			
 			#prevent user from blocking current player pos
-			if player.get_pos() == curtgt:
+			if player.position == curtgt:
 				return
 			
 			#if cell is empty
@@ -105,15 +106,15 @@ func _input(event):
 				
 				#create a block at the cell
 				var spr = load("res://textures/X.png")
-				var block = Sprite.new(); block.set_texture(spr)
-				block.set_offset(Vector2(0,1)); block.set_pos(curtgt)
+				var block = Sprite.new(); block.texture = spr
+				block.offset = Vector2(0,1); block.position = curtgt
 				add_child(block)
 				
 				#block the cell and store instance reference
 				grid[curtgt][0] = "blocked"; grid[curtgt][1] = block
 				
 				#clean drawn path
-				draw_node.path = Vector2Array()
+				draw_node.path = []
 			
 			#if a block is blocking the way
 			elif grid[curtgt][0] == "blocked":
@@ -123,7 +124,7 @@ func _input(event):
 				grid[curtgt][0] = "empty"; grid[curtgt][1] = null
 				
 				#clean drawn path
-				draw_node.path = Vector2Array()
+				draw_node.path = []
 
 
 

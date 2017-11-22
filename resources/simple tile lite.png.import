@@ -1,0 +1,24 @@
+[remap]
+
+importer="texture"
+type="StreamTexture"
+path="res://.import/simple tile lite.png-78e05d6922f75be14e8b98b37d5ce8ee.stex"
+
+[params]
+
+compress/mode=0
+compress/lossy_quality=0.7
+compress/hdr_mode=0
+compress/normal_map=2
+flags/repeat=0
+flags/filter=false
+flags/mipmaps=true
+flags/anisotropic=false
+flags/srgb=2
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/HDR_as_SRGB=false
+stream=false
+size_limit=0
+detect_3d=false
+svg/scale=1.0
